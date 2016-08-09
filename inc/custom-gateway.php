@@ -36,8 +36,11 @@ class Your_Custom_Gateway extends WC_Payment_Gateway {
     $order = wc_get_order( $order_id );
     $customer_id = $order->get_customer_id();
 
-    // magic happens
-
+    // magic happens (untested)
+    $stripe_customer = new WC_Stripe_Customer($customer_id);
+    $_POST['wc-stripe-payment-token'] = $stripe_customer->get_default_card();
+    $stripe = new WC_Gateway_Stripe();
+    $stripe->process_payment($order_id);
   }
 
 }
